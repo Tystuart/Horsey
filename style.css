@@ -1,0 +1,575 @@
+:root {
+    /* Premium Casino Colors */
+    --bg-dark: #0a1118;
+    --table-green: #062c10;
+    --table-green-light: #0a4018;
+    --gold: #d4af37;
+    --text-primary: #f0f0f0;
+    --text-secondary: #a0a0a0;
+
+    /* Horse Colors */
+    --h2: #e74c3c;
+    --h3: #d35400;
+    --h4: #e67e22;
+    --h5: #f1c40f;
+    --h6: #2ecc71;
+    --h7: #1abc9c;
+    --h8: #3498db;
+    --h9: #9b59b6;
+    --h10: #e056fd;
+    --h11: #eb4d4b;
+    --h12: #ffffff;
+
+    /* UI Elements */
+    --glass-bg: rgba(20, 30, 40, 0.7);
+    --glass-border: rgba(255, 255, 255, 0.1);
+    --shadow-soft: 0 8px 32px rgba(0, 0, 0, 0.3);
+
+    /* Fonts */
+    --font-heading: 'Playfair Display', serif;
+    --font-body: 'Inter', sans-serif;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    user-select: none;
+}
+
+body {
+    background-color: var(--bg-dark);
+    color: var(--text-primary);
+    font-family: var(--font-body);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+#game-container {
+    width: 100%;
+    max-width: 1200px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    background: radial-gradient(circle at center, var(--table-green-light) 0%, var(--table-green) 100%);
+    box-shadow: inset 0 0 100px rgba(0, 0, 0, 0.8);
+}
+
+/* Header */
+header {
+    text-align: center;
+    padding: 20px 0;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.6), transparent);
+    z-index: 10;
+}
+
+.logo {
+    font-family: var(--font-heading);
+    font-size: 3rem;
+    color: var(--gold);
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    letter-spacing: 2px;
+}
+
+.logo span {
+    font-style: italic;
+    font-weight: normal;
+    font-size: 2rem;
+    color: var(--text-primary);
+}
+
+.subtitle {
+    font-size: 1rem;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    margin-top: 5px;
+}
+
+/* Main Board Area */
+#board-area {
+    display: flex;
+    flex: 1;
+    padding: 20px 40px;
+    gap: 30px;
+}
+
+/* Left Panel: Pot & Scratched */
+#scratch-pot-area {
+    width: 300px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.pot-display {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+    box-shadow: var(--shadow-soft);
+    backdrop-filter: blur(10px);
+}
+
+.pot-display h2 {
+    font-family: var(--font-heading);
+    color: var(--gold);
+    margin-bottom: 10px;
+}
+
+.pot-amount {
+    font-size: 3rem;
+    font-weight: 700;
+}
+
+.pot-amount .currency {
+    font-size: 1rem;
+    color: var(--text-secondary);
+}
+
+.scratched-slots {
+    flex: 1;
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 12px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.scratched-slots h3 {
+    text-align: center;
+    color: var(--text-secondary);
+    margin-bottom: 10px;
+}
+
+.scratch-slot {
+    border: 1px dashed rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    height: 70px;
+    display: flex;
+    align-items: center;
+    padding: 0 15px;
+    position: relative;
+    background: rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+}
+
+.scratch-slot.filled {
+    border: 1px solid var(--gold);
+    background: rgba(212, 175, 55, 0.1);
+}
+
+.slot-label {
+    color: var(--text-secondary);
+    font-weight: 600;
+}
+
+.horse-placeholder {
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+}
+
+/* Right Panel: Track */
+#track-area {
+    flex: 1;
+    position: relative;
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    overflow-y: auto;
+}
+
+/* Finish Line Checkered Pattern */
+.finish-line {
+    position: absolute;
+    right: 40px;
+    /* Distance from end */
+    top: 20px;
+    bottom: 20px;
+    width: 20px;
+    background-image:
+        linear-gradient(45deg, #000 25%, transparent 25%, transparent 75%, #000 75%, #000),
+        linear-gradient(45deg, #000 25%, transparent 25%, transparent 75%, #000 75%, #000);
+    background-color: #fff;
+    background-size: 20px 20px;
+    background-position: 0 0, 10px 10px;
+    border-radius: 4px;
+    z-index: 1;
+    box-shadow: -2px 0 10px rgba(0, 0, 0, 0.5);
+}
+
+#tracks-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    z-index: 2;
+}
+
+.track-lane {
+    display: flex;
+    align-items: center;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 20px;
+    position: relative;
+    transition: opacity 0.5s ease;
+}
+
+.track-lane.scratched {
+    opacity: 0.3;
+}
+
+.horse-label {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    color: #fff;
+    background: #333;
+    z-index: 3;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.4);
+}
+
+.track-segments {
+    display: flex;
+    flex: 1;
+    margin-left: 10px;
+    position: relative;
+}
+
+.track-segment {
+    flex: 1;
+    max-width: 60px;
+    /* Space between steps */
+    height: 10px;
+    border-bottom: 2px dashed rgba(255, 255, 255, 0.1);
+}
+
+/* The Horse Token */
+.horse-token {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 45px;
+    /* Starts just past label */
+    transition: left 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    z-index: 4;
+    background-image: url('horse.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    /* Create a glowing drop shadow effect matching the horse color */
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.horse-token.scratched {
+    display: none;
+    /* Hidden on track when scratched */
+}
+
+/* Specific Horse Colors - Overriding the base image with blend modes */
+.lane-2 .horse-label,
+.horse-token[data-id="2"] {
+    background-color: var(--h2);
+    background-blend-mode: multiply;
+    filter: drop-shadow(0 0 8px var(--h2));
+    color: #fff;
+}
+
+.lane-3 .horse-label,
+.horse-token[data-id="3"] {
+    background-color: var(--h3);
+    background-blend-mode: multiply;
+    filter: drop-shadow(0 0 8px var(--h3));
+    color: #fff;
+}
+
+.lane-4 .horse-label,
+.horse-token[data-id="4"] {
+    background-color: var(--h4);
+    background-blend-mode: multiply;
+    filter: drop-shadow(0 0 8px var(--h4));
+    color: #fff;
+}
+
+.lane-5 .horse-label,
+.horse-token[data-id="5"] {
+    background-color: var(--h5);
+    background-blend-mode: multiply;
+    filter: drop-shadow(0 0 8px var(--h5));
+    color: #000;
+}
+
+.lane-6 .horse-label,
+.horse-token[data-id="6"] {
+    background-color: var(--h6);
+    background-blend-mode: multiply;
+    filter: drop-shadow(0 0 8px var(--h6));
+    color: #000;
+}
+
+.lane-7 .horse-label,
+.horse-token[data-id="7"] {
+    background-color: var(--h7);
+    background-blend-mode: multiply;
+    filter: drop-shadow(0 0 8px var(--h7));
+    color: #fff;
+}
+
+.lane-8 .horse-label,
+.horse-token[data-id="8"] {
+    background-color: var(--h8);
+    background-blend-mode: multiply;
+    filter: drop-shadow(0 0 8px var(--h8));
+    color: #fff;
+}
+
+.lane-9 .horse-label,
+.horse-token[data-id="9"] {
+    background-color: var(--h9);
+    background-blend-mode: multiply;
+    filter: drop-shadow(0 0 8px var(--h9));
+    color: #fff;
+}
+
+.lane-10 .horse-label,
+.horse-token[data-id="10"] {
+    background-color: var(--h10);
+    background-blend-mode: multiply;
+    filter: drop-shadow(0 0 8px var(--h10));
+    color: #fff;
+}
+
+.lane-11 .horse-label,
+.horse-token[data-id="11"] {
+    background-color: var(--h11);
+    background-blend-mode: multiply;
+    filter: drop-shadow(0 0 8px var(--h11));
+    color: #fff;
+}
+
+.lane-12 .horse-label,
+.horse-token[data-id="12"] {
+    background-color: var(--h12);
+    background-blend-mode: multiply;
+    filter: drop-shadow(0 0 8px var(--h12));
+    color: #000;
+}
+
+/* Control Panel */
+#controls-panel {
+    width: 600px;
+    margin: 0 auto 20px auto;
+    /* Centered, padding on bottom */
+    padding: 20px 40px;
+    border-radius: 50px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--shadow-soft);
+    backdrop-filter: blur(15px);
+    z-index: 20;
+    /* Removed absolute positioning */
+}
+
+#game-phase-info {
+    flex: 1;
+}
+
+#phase-title {
+    color: var(--gold);
+    font-family: var(--font-heading);
+    margin-bottom: 4px;
+}
+
+#phase-instructions {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+
+.dice-display {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin: 0 30px;
+}
+
+.die {
+    width: 50px;
+    height: 50px;
+    background: white;
+    color: black;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 3rem;
+    line-height: 1;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3), inset 0 -4px 0 rgba(0, 0, 0, 0.1);
+}
+
+.die.rolling {
+    animation: shake 0.5s ease-in-out infinite;
+}
+
+.roll-total {
+    font-size: 2rem;
+    font-weight: bold;
+    color: var(--gold);
+    width: 40px;
+    text-align: center;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #d4af37, #aa8529);
+    color: #fff;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 25px;
+    font-family: var(--font-body);
+    font-weight: bold;
+    font-size: 1rem;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(212, 175, 55, 0.4);
+    transition: all 0.2s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(212, 175, 55, 0.6);
+}
+
+.btn-primary:active {
+    transform: translateY(1px);
+}
+
+.btn-icon {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #fff;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin-left: 15px;
+}
+
+.btn-icon:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: rotate(180deg);
+}
+
+/* Modals */
+#modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(5px);
+    z-index: 100;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#modal-overlay.hidden {
+    display: none;
+}
+
+.modal {
+    width: 400px;
+    padding: 40px;
+    text-align: center;
+    border-radius: 20px;
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+}
+
+.modal h2 {
+    color: var(--gold);
+    font-family: var(--font-heading);
+    font-size: 2rem;
+    margin-bottom: 20px;
+}
+
+.modal p {
+    color: var(--text-secondary);
+    margin-bottom: 30px;
+    line-height: 1.6;
+}
+
+/* Animations */
+@keyframes shake {
+    0% {
+        transform: translate(1px, 1px) rotate(0deg);
+    }
+
+    10% {
+        transform: translate(-1px, -2px) rotate(-5deg);
+    }
+
+    20% {
+        transform: translate(-3px, 0px) rotate(5deg);
+    }
+
+    30% {
+        transform: translate(3px, 2px) rotate(0deg);
+    }
+
+    40% {
+        transform: translate(1px, -1px) rotate(5deg);
+    }
+
+    50% {
+        transform: translate(-1px, 2px) rotate(-5deg);
+    }
+
+    60% {
+        transform: translate(-3px, 1px) rotate(0deg);
+    }
+
+    70% {
+        transform: translate(3px, 1px) rotate(-5deg);
+    }
+
+    80% {
+        transform: translate(-1px, -1px) rotate(5deg);
+    }
+
+    90% {
+        transform: translate(1px, 2px) rotate(0deg);
+    }
+
+    100% {
+        transform: translate(1px, -2px) rotate(-5deg);
+    }
+}
